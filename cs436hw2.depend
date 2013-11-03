@@ -1,0 +1,30 @@
+# depslib dependency file v1.0
+1383437671 source:/home/jano/Projects/cs436hw2/classes.cpp
+	<iostream>
+	<cerrno>
+	<string>
+	<pthread.h>
+	<netdb.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<arpa/inet.h>
+	"classes.h"
+
+1383438669 /home/jano/Projects/cs436hw2/classes.h
+	<string>
+
+1383433187 source:/home/jano/Projects/cs436hw2/dnsServer.cpp
+	<pthread.h>
+	<iostream>
+	<cerrno>
+	<string>
+	<netdb.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<arpa/inet.h>
+	"classes.h"
+	<stdlib.h>
+	<stdio.h>
+
