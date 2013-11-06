@@ -148,14 +148,31 @@ char* Server::DNSLookupFunction(char requestedDns[], int size)
 
 }
 
+static Request ParseCommand(string command)
+{
+    char currentLetter= command[0];
+    Request ServerResponse;
+
+    switch(currentLetter)
+    {
+    case 'G':
+        break;
+    case 'H':
+        break;
+    }
+
+return ServerResponse;
+}
+
+
+
 void* Server::PthreadWorkFunction(void* packageToThread1)
 {
-    //Server* ServerObject = (Server*)integerSocketDescriptor;
-
     if (packageToThread1 == NULL)
     {
-        return (void*)1;
+        return packageToThread1;
     }
+
     int *socketID= (int*)packageToThread1;
 
 	char clientRequest[requestSize];

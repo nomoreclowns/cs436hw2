@@ -4,7 +4,7 @@
 
 #include <string>
 using namespace std;
-
+#include "Request.h"
 
 typedef struct
 {
@@ -22,20 +22,16 @@ private:
     const static unsigned int PayloadSize=255;
     const static unsigned int requestSize=100;
     unsigned short portNumber;
-    //int initialSocketDesc;
     void* packageToThread;
 
     Server(unsigned short);
-/*
-    friend void* ThreadFunction(void* arg)
-    {
-        return ((Server*)arg)->PthreadWorkFunction();
-    }
-*/
 
     static void *PthreadWorkFunction(void*);
 
     static char *DNSLookupFunction(char [], int );
+
+    static Request ParseCommand(string);
+
 
 public:
 
