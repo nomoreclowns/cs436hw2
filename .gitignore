@@ -4,3 +4,4 @@
 *.save
 *.depend
 *.layout
+Makefile
