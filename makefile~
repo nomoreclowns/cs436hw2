@@ -1,0 +1,17 @@
+PROGRAM = TestOutput
+OBJS = Request.o Response.o Server.o Utilities.o dnsServer.o
+all : $(PROGRAM) clean
+	@echo "Sucess"
+
+
+#linking
+$(Program) : $(OBJS)
+	g++ -o $(PROGRAM) -lpthreads $+
+
+#compile
+%.o:%.cpp
+	g++ -c $<
+
+#clean
+clean : $(OBJS)
+	rm $+

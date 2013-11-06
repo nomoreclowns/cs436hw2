@@ -273,11 +273,9 @@ Response Server::GetFile(string pathname, Command clientCommand)
   if(fin.is_open())
     {
       myResponse.status = 200;
-      while(!fin.eof())
-	{
-	  getline(fin, temp);
-	  // myResponse.contents =
-	}
+      char *buffer = new char[myStat.st_size];
+      fin.read(buffer,myStat.st_size);
+
     }
   else
     {
