@@ -4,15 +4,6 @@
 #include <string>
 using namespace std;
 
-class Request
-{
-    public:
-        Request();
-        string Command;
-        string Path;
-        string Version;
-};
-
 enum Command
 {
     GET=1,
@@ -21,5 +12,21 @@ enum Command
     DELETE=8,
     GARBAGE=16
 };
+
+enum HTTP_1
+{
+    Zero=0,
+    One=1
+};
+
+class Request
+{
+    public:
+        Request();
+        enum Command CommandRequest;
+        string Path;
+        enum HTTP_1 Version;
+};
+
 
 #endif // REQUEST_H

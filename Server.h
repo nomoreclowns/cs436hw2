@@ -32,6 +32,15 @@ private:
 
     static Request ParseCommand(string);
 
+    static Command tryParseCommand(string command);
+
+    static void tryGET(string command);
+
+    static void tryPUT(string command);
+
+    static void tryHEAD(string command);
+
+    static void tryDELETE(string command);
 
 public:
 

@@ -9,6 +9,8 @@ using namespace std;
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include "Server.h"
+#include "Utilities.h"
+#include <sys/stat.h>
 
 //#define requestSize 100
 //#define PayloadSize 255
@@ -148,7 +150,7 @@ char* Server::DNSLookupFunction(char requestedDns[], int size)
 
 }
 
-static Request ParseCommand(string command)
+static Request PreParseCommand(string command)
 {
     char currentLetter= command[0];
     Request ServerResponse;
@@ -159,12 +161,54 @@ static Request ParseCommand(string command)
         break;
     case 'H':
         break;
+    case 'P':
+        break;
+    case 'D':
+        break;
+    default:
+        break;
     }
 
-return ServerResponse;
+    return ServerResponse;
 }
 
+Command Server::tryParseCommand(string command)
+{
+    const unsigned int BufferSize=6;
 
+    if(command.length() >= BufferSize)
+    {
+        char parsed[BufferSize];
+
+        Utilities::initializeBuffer(parsed, BufferSize, 0);
+
+        for(int i =0; i<BufferSize; i++)
+        {
+
+        }
+    }
+
+}
+
+void Server::tryGET(string command)
+{
+
+}
+
+void Server::tryPUT(string command)
+{
+
+}
+
+void Server::tryHEAD(string command)
+{
+
+}
+
+void Server::tryDELETE(string command)
+{
+
+}
 
 void* Server::PthreadWorkFunction(void* packageToThread1)
 {
