@@ -119,10 +119,11 @@ char* Server::DNSLookupFunction(char requestedDns[], int size)
 		herror("gethostbyname");
 		return payload;
 	}
-
+	//for some reason  [addressString=dnsInfoPtr->h_name+"\n";] was giving errors so it was split into 2 lines.
 	addressString=dnsInfoPtr->h_name;
 	addressString=addressString+"\n";
 
+	//If you are confused about this code... so am I
 	addressList = (struct in_addr **)dnsInfoPtr->h_addr_list;
 	for(count=0;addressList[count]!=NULL;count++)
 	{
@@ -130,6 +131,7 @@ char* Server::DNSLookupFunction(char requestedDns[], int size)
 		addressString = addressString + "\n";
 	}
 
+	// place contents into a buffer to be sent to the client
 	for(count=0;count < addressString.size(); count++)
 	{
 		payload[count]=addressString[count];
