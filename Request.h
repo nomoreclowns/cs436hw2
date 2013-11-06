@@ -13,4 +13,13 @@ class Request
         string Version;
 };
 
+enum Command
+{
+    GET=1,
+    HEAD=2,
+    POST=4,
+    DELETE=8,
+    GARBAGE=16
+};
+
 #endif // REQUEST_H
