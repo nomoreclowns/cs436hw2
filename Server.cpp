@@ -157,41 +157,64 @@ char* Server::DNSLookupFunction(char requestedDns[], int size)
 
 static Request PreParseCommand(string command)
 {
-    char currentLetter= command[0];
-    Request ServerResponse;
+    Command clientCommand= tryParseCommand(command);
 
-    switch(currentLetter)
+    Request ClientRequest;
+
+    switch(clientCommand)
     {
-    case 'G':
+    case GET:
         break;
-    case 'H':
+    case PUT:
         break;
-    case 'P':
+    case HEAD:
         break;
-    case 'D':
+    case DELETE:
         break;
     default:
         break;
     }
 
-    return ServerResponse;
+    return ClientCommand;
 }
 
-Command Server::tryParseCommand(string command)
+Command Server::tryParseCommand(string clientCommand)
 {
-    const unsigned int BufferSize=6;
+    const unsigned int MinCommandSize=3;
 
-    if(command.length() >= BufferSize)
+    Command package= GARBAGE;
+
+    if(clientCommand.length() > MinCommandSize)
     {
-        char parsed[BufferSize];
+        string parsedCommand= clientCommand.substr(0, MinCommandSize);
 
-        Utilities::initializeBuffer(parsed, BufferSize, 0);
-
-        for(int i =0; i<BufferSize; i++)
+        if(parsedCommand == "GET")
         {
-
+            package= GET;
+        }
+        else if(parsedCommand == "PUT")
+        {
+            package= PUT;
+        }
+        else
+        {
+            parsedCommand= clientCommand.substr(0, 4);
+            if(parsedCommand == "HEAD")
+            {
+                package= HEAD;
+            }
+            else
+            {
+                parsedCommand= clientCommand.substr(0, 6);
+                if (parsedCommand == "DELETE")
+                {
+                    package= DELETE;
+                }
+            }
         }
     }
+
+    return package;
 
 }
 

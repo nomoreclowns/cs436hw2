@@ -8,7 +8,7 @@ enum Command
 {
     GET=1,
     HEAD=2,
-    POST=4,
+    PUT=4,
     DELETE=8,
     GARBAGE=16
 };
