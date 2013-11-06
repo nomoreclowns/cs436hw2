@@ -5,3 +5,4 @@ makefile
 *.save
 *.depend
 *.layout
+Makefile
