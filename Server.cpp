@@ -239,6 +239,11 @@ void* Server::PthreadWorkFunction(void* packageToThread1)
 Response Server::GetFile(string pathname, Command clientCommand)
 {
   Response myResponse;
+  struct stat myStat;
+  struct stat *myStatPointer = &myStat;
+  stat(pathname.c_str(), myStatPointer);
+
+
   string temp;
   ifstream fin;
   fin.open(pathname.c_str());
