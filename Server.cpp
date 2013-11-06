@@ -1,19 +1,24 @@
+//C++ headers
 #include <iostream>
 #include <cerrno>
 #include <string>
+// the following was included to open a file in the GetFile function
+#include <fstream>
 using namespace std;
+
+//C headers
 #include <pthread.h>
 #include <netdb.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include "Server.h"
-#include "Utilities.h"
 #include <sys/stat.h>
 
-//#define requestSize 100
-//#define PayloadSize 255
+//Project headers
+#include "Response.h"
+#include "Server.h"
+#include "Utilities.h"
 
 //private constructor for class used by the factory method
 Server::Server(unsigned short inPortNumber)
@@ -231,3 +236,23 @@ void* Server::PthreadWorkFunction(void* packageToThread1)
 	return (void*)0;
 }
 
+Response Server::GetFile(string pathname, Command clientCommand)
+{
+  Response myResponse;
+  string temp;
+  ifstream fin;
+  fin.open(pathname.c_str());
+  if(fin.is_open())
+    {
+      myResponse.status = 200;
+      while(!fin.eof())
+	{
+	  getline(fin, temp);
+	  // myResponse.contents =
+	}
+    }
+  else
+    {
+      myResponse.status = 404;
+    }
+}

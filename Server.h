@@ -5,6 +5,7 @@
 #include <string>
 using namespace std;
 #include "Request.h"
+#include "Response.h"
 
 typedef struct
 {
@@ -41,6 +42,11 @@ private:
     static void tryHEAD(string command);
 
     static void tryDELETE(string command);
+
+    // The GetFile function returns an object of type Response
+    // pathname holds the file location of the file being requested
+    // clientCommand holds the command the client is executing.
+    Response GetFile(string pathname, Command clientCommand);
 
 public:
 
