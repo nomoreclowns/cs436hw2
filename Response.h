@@ -9,6 +9,6 @@ class Response {
   string metadata;
   string contents;
   void printReponse();
-}
+};
 
 #endif // SERVER_H

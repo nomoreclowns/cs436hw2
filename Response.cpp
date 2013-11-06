@@ -2,5 +2,7 @@
 
 Response::Response()
 {
-
+  status = 0;
+  metadata = "";
+  contents = "";
 }

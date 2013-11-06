@@ -9,6 +9,8 @@ using namespace std;
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include "Server.h"
+// the following was included to open a file in the GetFile function
+#include <fstream>
 
 //#define requestSize 100
 //#define PayloadSize 255
@@ -187,3 +189,23 @@ void* Server::PthreadWorkFunction(void* packageToThread1)
 	return (void*)0;
 }
 
+Response Server::GetFile(string pathname.c_str(), Command clientCommand)
+{
+  Response myResponse;
+  string temp;
+  ifstream fin;
+  fin.open(pathname);
+  if(fin.is_open())
+    {
+      myResponse.status = 200;
+      while(!fin.eof())
+	{
+	  getline(fin, temp);
+	  // myResponse.contents = 
+	}
+    }
+  else
+    {
+      myResponse.status = 404;
+    }
+}
