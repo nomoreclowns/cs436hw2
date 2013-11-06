@@ -155,7 +155,7 @@ char* Server::DNSLookupFunction(char requestedDns[], int size)
 
 }
 
-static Request PreParseCommand(string command)
+ Request Server::PreParseCommand(string command)
 {
     Command clientCommand= tryParseCommand(command);
 
@@ -175,7 +175,7 @@ static Request PreParseCommand(string command)
         break;
     }
 
-    return ClientCommand;
+    return ClientRequest;
 }
 
 Command Server::tryParseCommand(string clientCommand)

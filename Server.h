@@ -33,15 +33,17 @@ private:
 
     static Request ParseCommand(string);
 
-    static Command tryParseCommand(string command);
+    static Command tryParseCommand(string );
 
-    static void tryGET(string command);
+    static void tryGET(string );
 
-    static void tryPUT(string command);
+    static void tryPUT(string );
 
-    static void tryHEAD(string command);
+    static void tryHEAD(string );
 
-    static void tryDELETE(string command);
+    static void tryDELETE(string );
+
+    static Request PreParseCommand(string );
 
     // The GetFile function returns an object of type Response
     // pathname holds the file location of the file being requested
