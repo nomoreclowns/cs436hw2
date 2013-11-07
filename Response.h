@@ -8,7 +8,7 @@ using namespace std;
 class Response {
  public:
   short status;
-  string metadata;
+  int dateModified;
   string contents;
   void printReponse();
   Response();

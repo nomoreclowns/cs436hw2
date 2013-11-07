@@ -81,7 +81,7 @@ int Server::Run()
 		packageToThread=&newSocketDesc;
 
 		//create a new thread and give it a pointer to the function that handles clients
-		pthread_create(&tid[threadIndex], 0, Server::PthreadWorkFunction, packageToThread);
+		pthread_create(&tid[threadIndex], 0, &Server::PthreadWorkFunction, packageToThread);
 
 		threadIndex++;
 	}
@@ -264,21 +264,28 @@ Response Server::GetFile(string pathname, Command clientCommand)
   Response myResponse;
   struct stat myStat;
   struct stat *myStatPointer = &myStat;
-  stat(pathname.c_str(), myStatPointer);
+  int returnStatus =  stat(pathname.c_str(), myStatPointer);
 
 
   string temp;
   ifstream fin;
   fin.open(pathname.c_str());
-  if(fin.is_open())
+  if(fin.is_open() && clientCommand == GET)
     {
       myResponse.status = 200;
       char *buffer = new char[myStat.st_size];
       fin.read(buffer,myStat.st_size);
-
+      myResponse.contents = string(buffer,myStat.st_size);
+    }
+  else if(fin.is_open() && clientCommand == HEAD)
+    {
+      myResponse.status = 200;
+      myResponse.dateModified = myStat.st_mtime;
     }
   else
     {
       myResponse.status = 404;
     }
+  fin.close();
+  return myResponse;
 }

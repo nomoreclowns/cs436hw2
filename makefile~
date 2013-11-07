@@ -1,17 +1,15 @@
-PROGRAM = TestOutput
 OBJS = Request.o Response.o Server.o Utilities.o dnsServer.o
-all : $(PROGRAM) clean
-	@echo "Sucess"
-
+all : output clean
+	@echo "Super Sucess"
 
 #linking
-$(Program) : $(OBJS)
-	g++ -o $(PROGRAM) -lpthreads $+
+output : $(OBJS)
+	g++ -lpthread $+ -o output
 
 #compile
 %.o:%.cpp
-	g++ -c $<
+	g++ -pthread -c $<
 
 #clean
 clean : $(OBJS)
-	rm $+
+	@rm $+

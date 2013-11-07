@@ -3,6 +3,6 @@
 Response::Response()
 {
   status = 0;
-  metadata = "";
+  dateModified = 0;
   contents = "";
 }
