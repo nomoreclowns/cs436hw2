@@ -39,21 +39,15 @@ private:
 
     static char *DNSLookupFunction(char [], int );
 
-    Request ParseCommand(string);
+    Response ProcessCommand(string);
 
-    static Command tryParseCommand(string );
+    void tryGET(Request );
 
-    static string parsePath(string);
+    void tryPUT(Request );
 
-    static HTTP_1 parseHTTPVersion(string);
+    void tryHEAD(Request );
 
-    void tryGET(string );
-
-    void tryPUT(string );
-
-    void tryHEAD(string );
-
-    void tryDELETE(string );
+    void tryDELETE(Request );
 
     // The GetFile function returns an object of type Response
     // pathname holds the file location of the file being requested

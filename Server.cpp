@@ -92,118 +92,50 @@ int Server::Run()
 	return 0;
 }
 
-
- Request Server::ParseCommand(string command)
+Response Server::ProcessCommand(string command)
 {
+    Response* ServerResponse = new Response();
+
     Request* ClientRequest= new Request();
-
-    ClientRequest->CommandRequest=tryParseCommand(command);
-    ClientRequest->Path=parsePath(command);
-    ClientRequest->Version=parseHTTPVersion(command);
-
+    ClientRequest->Parse(command);
     switch(ClientRequest->CommandRequest)
     {
     case GET:
+        ;
         break;
     case PUT:
+        ;
         break;
     case HEAD:
+        ;
         break;
     case DELETE:
+        ;
         break;
     default:
         break;
+
     }
 
-    return *ClientRequest;
+    return *ServerResponse;
 }
 
-Command Server::tryParseCommand(string clientCommand)
+void Server::tryGET(Request clientRequest)
 {
-    unsigned int MinCommandSize=4;
-
-    Command package= GARBAGE;
-
-    if(clientCommand.length() > MinCommandSize)
-    {
-        string parsedCommand= clientCommand.substr(0, MinCommandSize);
-        parsedCommand.resize(7);
-
-        if(parsedCommand == "GET ")
-        {
-            package= GET;
-        }
-        else if(parsedCommand == "PUT ")
-        {
-            package= PUT;
-        }
-        else
-        {
-            MinCommandSize=5;
-            parsedCommand= clientCommand.substr(0, MinCommandSize);
-            if(parsedCommand == "HEAD ")
-            {
-                package= HEAD;
-            }
-            else
-            {
-            MinCommandSize=7;
-                parsedCommand= clientCommand.substr(0, MinCommandSize);
-                if (parsedCommand == "DELETE ")
-                {
-                    package= DELETE;
-                }
-                else
-                {
-                    return package;
-                }
-            }
-        }
-    }
-    clientCommand.erase(0,MinCommandSize);
-    return package;
-
+    GetFile(clientRequest.Path, clientRequest.CommandRequest);
 }
 
-string Server::parsePath(string command)
-{
-	string path="";
-
-	path.reserve(command.length());
-
-	for (unsigned int i= 0; command[i] != ' ' && i< command.length(); i++)
-	{
-		path += command[i];
-	}
-
-	return path;
-}
-
-HTTP_1 Server::parseHTTPVersion(string command)
-{
-	HTTP_1 Version = Zero;
-
-	return Version;
-}
-
-
-
-void Server::tryGET(string command)
+void Server::tryPUT(Request clientRequest)
 {
 
 }
 
-void Server::tryPUT(string command)
+void Server::tryHEAD(Request clientRequest)
 {
 
 }
 
-void Server::tryHEAD(string command)
-{
-
-}
-
-void Server::tryDELETE(string command)
+void Server::tryDELETE(Request clientRequest)
 {
 
 }

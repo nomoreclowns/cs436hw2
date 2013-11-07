@@ -22,10 +22,18 @@ enum HTTP_1
 class Request
 {
     public:
+        void Parse(string);
+
         Request();
+        Request(string);
+
         Command CommandRequest;
         string Path;
         HTTP_1 Version;
+    private:
+        Command ParseCommand(string);
+        string ParsePath(string);
+        HTTP_1 ParseHTTPVersion(string);
 };
 
 
