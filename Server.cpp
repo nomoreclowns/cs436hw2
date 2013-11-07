@@ -180,33 +180,36 @@ char* Server::DNSLookupFunction(char requestedDns[], int size)
 
 Command Server::tryParseCommand(string clientCommand)
 {
-    const unsigned int MinCommandSize=3;
+    const unsigned int MinCommandSize=4;
 
     Command package= GARBAGE;
+
+
+	//insert code to modify the original string
 
     if(clientCommand.length() > MinCommandSize)
     {
         string parsedCommand= clientCommand.substr(0, MinCommandSize);
 
-        if(parsedCommand == "GET")
+        if(parsedCommand == "GET ")
         {
             package= GET;
         }
-        else if(parsedCommand == "PUT")
+        else if(parsedCommand == "PUT ")
         {
             package= PUT;
         }
         else
         {
-            parsedCommand= clientCommand.substr(0, 4);
-            if(parsedCommand == "HEAD")
+            parsedCommand= clientCommand.substr(0, 5);
+            if(parsedCommand == "HEAD ")
             {
                 package= HEAD;
             }
             else
             {
-                parsedCommand= clientCommand.substr(0, 6);
-                if (parsedCommand == "DELETE")
+                parsedCommand= clientCommand.substr(0, 7);
+                if (parsedCommand == "DELETE ")
                 {
                     package= DELETE;
                 }
@@ -217,6 +220,29 @@ Command Server::tryParseCommand(string clientCommand)
     return package;
 
 }
+
+string Server::parsePath(string command)
+{
+	string path="";
+	
+	path.capacity=command.length();
+	
+	for (int i= 0; command[i] != ' ' && i< string.length(); i++)
+	{
+		path += command[i];
+	}
+
+	return path;
+}
+
+HTTP_1 Server::parseHTTPVersion(string command)
+{
+	HTTP_1 Version;
+	
+	return Version;
+}
+
+
 
 void Server::tryGET(string command)
 {
