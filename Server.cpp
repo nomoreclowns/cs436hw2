@@ -225,9 +225,9 @@ string Server::parsePath(string command)
 {
 	string path="";
 	
-	path.capacity=command.length();
+	path.reserve(command.length());
 	
-	for (int i= 0; command[i] != ' ' && i< string.length(); i++)
+	for (int i= 0; command[i] != ' ' && i< command.length(); i++)
 	{
 		path += command[i];
 	}

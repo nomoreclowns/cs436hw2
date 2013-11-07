@@ -1,10 +1,10 @@
 OBJS = Request.o Response.o Server.o Utilities.o dnsServer.o
 all : output clean
-	@echo "Super Sucess"
+	@echo "Super Mother Fucking Sucess, bitches!"
 
 #linking
 output : $(OBJS)
-	g++ -lpthread $+ -o output
+	g++ -pthread $+ -o output
 
 #compile
 %.o:%.cpp
