@@ -2,6 +2,8 @@
 #define UTILITIES_H
 
 
+class Server;
+
 class Utilities
 {
     public:
@@ -9,6 +11,16 @@ class Utilities
         static void initializeBuffer(char*, int, int);
     protected:
     private:
+};
+
+class ThreadPackage
+{
+public:
+    ThreadPackage();
+    ThreadPackage(Server*, int);
+
+    Server* ServerInstance;
+    int SocketData;
 };
 
 #endif // UTILITIES_H

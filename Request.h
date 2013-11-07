@@ -23,9 +23,9 @@ class Request
 {
     public:
         Request();
-        enum Command CommandRequest;
+        Command CommandRequest;
         string Path;
-        enum HTTP_1 Version;
+        HTTP_1 Version;
 };
 
 

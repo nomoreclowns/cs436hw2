@@ -1,8 +1,11 @@
 [Dd]ebug
 [Bb]in
-makefile
+[Mm]akefile
 *.cbp
 *.save
 *.depend
 *.layout
-Makefile
+[Oo]utput
+*.out
+*.o
+*.cscope_file_list

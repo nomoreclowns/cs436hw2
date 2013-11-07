@@ -12,3 +12,17 @@ void Utilities::initializeBuffer(char buffer[], int size, int initialValue)
         buffer[i]= initialValue;
     }
 }
+
+
+
+ThreadPackage::ThreadPackage()
+{
+    ServerInstance=0;
+    SocketData=0;
+}
+
+ThreadPackage::ThreadPackage(Server* ptr, int someInt)
+{
+    ServerInstance=ptr;
+    SocketData=someInt;
+}

@@ -23,11 +23,7 @@ using namespace std;
 //private constructor for class used by the factory method
 Server::Server(unsigned short inPortNumber)
 {
-
     portNumber=inPortNumber;
-
-    // this is initialized to NULL to access to random locations
-    packageToThread= NULL;
 }
 
 //static factory method for creating server objects
@@ -68,6 +64,7 @@ int Server::Run()
     // initialize an array to hold thread ID's
 	pthread_t tid[50];
 	int threadIndex=0;
+	ThreadPackage* packageToThread;
 
 	while(true)
 	{
@@ -78,10 +75,10 @@ int Server::Run()
 
 		cout<<"accepted connection"<<endl;
 		//set the pointer to point to the ID of the new socket that will be used to communicate with connected client
-		packageToThread=&newSocketDesc;
+		packageToThread=new ThreadPackage(this, newSocketDesc);
 
 		//create a new thread and give it a pointer to the function that handles clients
-		pthread_create(&tid[threadIndex], 0, &Server::PthreadWorkFunction, packageToThread);
+		pthread_create(&tid[threadIndex], 0, &ThreadFunction, packageToThread);
 
 		threadIndex++;
 	}
@@ -96,72 +93,15 @@ int Server::Run()
 }
 
 
-
-//static function that does the DNS lookup
-char* Server::DNSLookupFunction(char requestedDns[], int size)
+ Request Server::ParseCommand(string command)
 {
-	//cout<<"In Function DNSLookupFunction()"<<endl;
+    Request* ClientRequest= new Request();
 
-	unsigned int count;
-	struct hostent *dnsInfoPtr;
-	struct in_addr **addressList;
+    ClientRequest->CommandRequest=tryParseCommand(command);
+    ClientRequest->Path=parsePath(command);
+    ClientRequest->Version=parseHTTPVersion(command);
 
-	//create a string out of the character array to hold the website name
-	string dnsString(requestedDns, size);
-
-	string addressString= "";
-
-	//byte array to hold the DNS data
-	char payload[PayloadSize];
-
-    //initialize array to 0's just to be safe
-	for (count=0;count<PayloadSize;count++)
-	{
-		payload[count]=0;
-	}
-
-	//this is a candidate for elimination
-	if ((dnsInfoPtr = gethostbyname(dnsString.c_str())) == NULL) //get the host info
-	{
-		herror("gethostbyname");
-		return payload;
-	}
-	//for some reason  [addressString=dnsInfoPtr->h_name+"\n";] was giving errors so it was split into 2 lines.
-	addressString=dnsInfoPtr->h_name;
-	addressString=addressString+"\n";
-
-	//If you are confused about this code... so am I
-	addressList = (struct in_addr **)dnsInfoPtr->h_addr_list;
-	for(count=0;addressList[count]!=NULL;count++)
-	{
-		addressString = addressString + inet_ntoa(*addressList[count]);
-		addressString = addressString + "\n";
-	}
-
-	// place contents into a buffer to be sent to the client
-	for(count=0;count < addressString.size(); count++)
-	{
-		payload[count]=addressString[count];
-	}
-
-	for(count=count; count <PayloadSize; count++)
-	{
-		payload[count]='\0';
-	}
-	string temp(payload, PayloadSize);
-	cout<<temp<<endl;
-
-	return payload;
-
-}
-
- Request Server::PreParseCommand(string command)
-{
-    Command clientCommand= tryParseCommand(command);
-
-    Request ClientRequest;
-
-    switch(clientCommand)
+    switch(ClientRequest->CommandRequest)
     {
     case GET:
         break;
@@ -175,21 +115,19 @@ char* Server::DNSLookupFunction(char requestedDns[], int size)
         break;
     }
 
-    return ClientRequest;
+    return *ClientRequest;
 }
 
 Command Server::tryParseCommand(string clientCommand)
 {
-    const unsigned int MinCommandSize=4;
+    unsigned int MinCommandSize=4;
 
     Command package= GARBAGE;
-
-
-	//insert code to modify the original string
 
     if(clientCommand.length() > MinCommandSize)
     {
         string parsedCommand= clientCommand.substr(0, MinCommandSize);
+        parsedCommand.resize(7);
 
         if(parsedCommand == "GET ")
         {
@@ -201,22 +139,28 @@ Command Server::tryParseCommand(string clientCommand)
         }
         else
         {
-            parsedCommand= clientCommand.substr(0, 5);
+            MinCommandSize=5;
+            parsedCommand= clientCommand.substr(0, MinCommandSize);
             if(parsedCommand == "HEAD ")
             {
                 package= HEAD;
             }
             else
             {
-                parsedCommand= clientCommand.substr(0, 7);
+            MinCommandSize=7;
+                parsedCommand= clientCommand.substr(0, MinCommandSize);
                 if (parsedCommand == "DELETE ")
                 {
                     package= DELETE;
                 }
+                else
+                {
+                    return package;
+                }
             }
         }
     }
-
+    clientCommand.erase(0,MinCommandSize);
     return package;
 
 }
@@ -224,10 +168,10 @@ Command Server::tryParseCommand(string clientCommand)
 string Server::parsePath(string command)
 {
 	string path="";
-	
+
 	path.reserve(command.length());
-	
-	for (int i= 0; command[i] != ' ' && i< command.length(); i++)
+
+	for (unsigned int i= 0; command[i] != ' ' && i< command.length(); i++)
 	{
 		path += command[i];
 	}
@@ -237,8 +181,8 @@ string Server::parsePath(string command)
 
 HTTP_1 Server::parseHTTPVersion(string command)
 {
-	HTTP_1 Version;
-	
+	HTTP_1 Version = Zero;
+
 	return Version;
 }
 
@@ -264,7 +208,7 @@ void Server::tryDELETE(string command)
 
 }
 
-void* Server::PthreadWorkFunction(void* packageToThread1)
+void* Server::PthreadWorkFunction_obsolete(void* packageToThread1)
 {
     if (packageToThread1 == NULL)
     {
@@ -278,9 +222,30 @@ void* Server::PthreadWorkFunction(void* packageToThread1)
 	cout<<"waiting for client request..."<<endl;
 	recv(*socketID, clientRequest, requestSize, 0);
 	cout<<"received request!"<<endl;
-	char *DNSResponse=DNSLookupFunction(clientRequest, requestSize);
+	//char *DNSResponse=DNSLookupFunction(clientRequest, requestSize);
 	//cout<<"DNSResponse = "<<DNSResponse<<endl;
-	send(*socketID, DNSResponse, PayloadSize, 0);
+	//send(*socketID, DNSResponse, PayloadSize, 0);
+
+	return (void*)0;
+}
+
+void* Server::PthreadWorkFunction(ThreadPackage* packageToThread)
+{
+    if (packageToThread == NULL)
+    {
+        return packageToThread;
+    }
+
+    int socketID= packageToThread->SocketData;
+
+	char clientRequest[requestSize];
+	//char *clientRequestPtr=clientRequest;
+	cout<<"waiting for client request..."<<endl;
+	recv(socketID, clientRequest, requestSize, 0);
+	cout<<"received request!"<<endl;
+	//char *DNSResponse=DNSLookupFunction(clientRequest, requestSize);
+	//cout<<"DNSResponse = "<<DNSResponse<<endl;
+	//send(socketID, DNSResponse, PayloadSize, 0);
 
 	return (void*)0;
 }
@@ -290,28 +255,33 @@ Response Server::GetFile(string pathname, Command clientCommand)
   Response myResponse;
   struct stat myStat;
   struct stat *myStatPointer = &myStat;
-  int returnStatus =  stat(pathname.c_str(), myStatPointer);
+  int functionError =  stat(pathname.c_str(), myStatPointer);
+
+  if(functionError == 0)
+  {
+      string temp;
+      ifstream fin;
+      fin.open(pathname.c_str());
+      if(fin.is_open() && clientCommand == GET)
+        {
+          myResponse.status = 200;
+          char *buffer = new char[myStat.st_size];
+          fin.read(buffer,myStat.st_size);
+          myResponse.contents = string(buffer,myStat.st_size);
+        }
+      else if(fin.is_open() && clientCommand == HEAD)
+        {
+          myResponse.status = 200;
+          myResponse.dateModified = myStat.st_mtime;
+        }
+      else
+        {
+          myResponse.status = 404;
+        }
+      fin.close();
+  }
 
 
-  string temp;
-  ifstream fin;
-  fin.open(pathname.c_str());
-  if(fin.is_open() && clientCommand == GET)
-    {
-      myResponse.status = 200;
-      char *buffer = new char[myStat.st_size];
-      fin.read(buffer,myStat.st_size);
-      myResponse.contents = string(buffer,myStat.st_size);
-    }
-  else if(fin.is_open() && clientCommand == HEAD)
-    {
-      myResponse.status = 200;
-      myResponse.dateModified = myStat.st_mtime;
-    }
-  else
-    {
-      myResponse.status = 404;
-    }
-  fin.close();
+
   return myResponse;
 }
