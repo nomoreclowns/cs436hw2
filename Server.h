@@ -35,6 +35,10 @@ private:
 
     static Command tryParseCommand(string );
 
+    static string parsePath(string);
+    
+    static HTTP_1 parseHTTPVersion(string);
+
     static void tryGET(string );
 
     static void tryPUT(string );
