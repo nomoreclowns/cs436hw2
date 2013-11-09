@@ -80,8 +80,8 @@ string Request::ParsePath(string command)
 
 HTTP_1 Request::ParseHTTPVersion(string command)
 {
-	HTTP_1 Version = Zero;
+	//HTTP_1 Version = Zero;
 
-	return Version;
+	return Zero;
 }
 

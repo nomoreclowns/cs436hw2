@@ -14,6 +14,7 @@ using namespace std;
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 //Project headers
 #include "Response.h"
@@ -191,26 +192,34 @@ Response Server::GetFile(string pathname, Command clientCommand)
 
   if(functionError == 0)
   {
-      string temp;
+      myResponse.status = 200;
+      myResponse.dateModified = myStat.st_mtime;
+
       ifstream fin;
-      fin.open(pathname.c_str());
-      if(fin.is_open() && clientCommand == GET)
-        {
-          myResponse.status = 200;
-          char *buffer = new char[myStat.st_size];
-          fin.read(buffer,myStat.st_size);
-          myResponse.contents = string(buffer,myStat.st_size);
-        }
-      else if(fin.is_open() && clientCommand == HEAD)
-        {
-          myResponse.status = 200;
-          myResponse.dateModified = myStat.st_mtime;
-        }
-      else
-        {
+      if(clientCommand == GET)
+      {
+            fin.open(pathname.c_str());
+            if(fin.is_open())
+            {
+              char *buffer = new char[myStat.st_size];
+              fin.read(buffer,myStat.st_size);
+              myResponse.contents = string(buffer,myStat.st_size);
+              fin.close();
+            }
+      }
+  }
+  else
+  {
+      int errorValue = errno;
+      if(errorValue == EACCES)
+      {
+          //Permission denied error
+          //myResponse.status = ;
+      }
+      else if(errorValue == ENOENT)
+      {
           myResponse.status = 404;
-        }
-      fin.close();
+      }
   }
 
 
