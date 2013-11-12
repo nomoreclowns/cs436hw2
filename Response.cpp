@@ -5,12 +5,14 @@ using namespace std;
 Response::Response()
 {
   status = 0;
-  dateModified = 0;
-  contents = "";
+  //dateModified = 0;
+  entity = "";
 }
 
-void Response::printReponse()
+
+void Response::Form()
 {
     string package="";
     package.reserve(5);
 }
+

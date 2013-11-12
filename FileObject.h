@@ -6,6 +6,8 @@ using namespace std;
 
 #include <sys/stat.h>
 
+#include "Utilities.h"
+
 typedef struct stat FileStats;
 
 
@@ -21,21 +23,59 @@ protected:
 public:
     FileInfo();
     virtual int getData(string);
-    string FullPath();
-    string DateModified();
-    unsigned long FileSize();
-    unsigned int Permissions();
+    virtual int DeleteFile(string);
+
+    string FullPath()
+    {
+        return pFullPath;
+    }
+
+    string DateModified()
+    {
+        return pDateModified;
+    }
+
+    unsigned long FileSize()
+    {
+        return pFileSize;
+    }
+
+    unsigned int Permissions()
+    {
+        return pPermissions;
+    }
 };
 
-class FileObject : public FileInfo
+class FileReader : public FileInfo
 {
 protected:
     string pContent;
 
 public:
-    FileObject();
-    int getData(string);
-    string Content();
+    FileReader();
+    virtual int getData(string);
+
+    string Content()
+    {
+        return pContent;
+    }
+};
+
+class FileWriter
+{
+protected:
+    string pFullPath;
+    string Content;
+
+public:
+
+    FileWriter(string);
+    int Write(string);
+
+    string FullPath()
+    {
+        return pFullPath;
+    }
 };
 
 #endif

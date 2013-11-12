@@ -28,14 +28,14 @@ Server::Server(unsigned short inPortNumber)
 }
 
 //static factory method for creating server objects
-Server Server::GenerateServer()
+Server* Server::GenerateServer()
 {
     Server* package= new Server(defaultPort);
 
-    return *package;
+    return package;
 }
 
-Server Server::GenerateServer(string inPortNumber)
+Server* Server::GenerateServer(string inPortNumber)
 {
     int port;
     try
@@ -48,7 +48,7 @@ Server Server::GenerateServer(string inPortNumber)
     }
     Server* package= new Server(port);
 
-    return *package;
+    return package;
 }
 
 //start the server... simple enough
@@ -109,78 +109,6 @@ int Server::Run()
 	return 0;
 }
 
-Response Server::ProcessCommand(string command)
-{
-    Response* ServerResponse = new Response();
-
-    Request* ClientRequest= new Request();
-    ClientRequest->Parse(command);
-    switch(ClientRequest->CommandRequest)
-    {
-    case GET:
-        ;
-        break;
-    case PUT:
-        ;
-        break;
-    case HEAD:
-        ;
-        break;
-    case POST:
-        ;
-        break;
-    case DELETE:
-        ;
-        break;
-    default:
-        break;
-
-    }
-
-    return *ServerResponse;
-}
-
-void Server::tryGET(Request clientRequest)
-{
-    GetFile(clientRequest.Path, clientRequest.CommandRequest);
-}
-
-void Server::tryPUT(Request clientRequest)
-{
-
-}
-
-void Server::tryHEAD(Request clientRequest)
-{
-
-}
-
-void Server::tryDELETE(Request clientRequest)
-{
-
-}
-
-void* Server::PthreadWorkFunction_obsolete(void* packageToThread1)
-{
-    if (packageToThread1 == nullptr)
-    {
-        return packageToThread1;
-    }
-
-    int *socketID= (int*)packageToThread1;
-
-	char clientRequest[requestSize];
-	//char *clientRequestPtr=clientRequest;
-	cout<<"waiting for client request..."<<endl;
-	recv(*socketID, clientRequest, requestSize, 0);
-	cout<<"received request!"<<endl;
-	//char *DNSResponse=DNSLookupFunction(clientRequest, requestSize);
-	//cout<<"DNSResponse = "<<DNSResponse<<endl;
-	//send(*socketID, DNSResponse, PayloadSize, 0);
-
-	return nullptr;
-}
-
 void* Server::PthreadWorkFunction(ThreadPackage* packageToThread)
 {
     if (packageToThread == nullptr)
@@ -221,7 +149,7 @@ Response Server::GetFile(string pathname, Command clientCommand)
           //myResponse.status = ;
       }
       myResponse.status = 200;
-      myResponse.dateModified = fileMetaData->st_mtime;
+      //myResponse.dateModified = fileMetaData->st_mtime;
 
       ifstream fin;
       if(clientCommand == GET)
@@ -231,7 +159,7 @@ Response Server::GetFile(string pathname, Command clientCommand)
             {
               char *buffer = new char[fileMetaData->st_size];
               fin.read(buffer,fileMetaData->st_size);
-              myResponse.contents = string(buffer,fileMetaData->st_size);
+              myResponse.entity = string(buffer,fileMetaData->st_size);
               fin.close();
             }
       }

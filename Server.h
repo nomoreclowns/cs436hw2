@@ -8,25 +8,18 @@ using namespace std;
 #include "Utilities.h"
 #include "FileObject.h"
 
-typedef struct
-{
-  string Name;
-  string ipAddresses;
-  int byteCount;
-} response;
-
-void* ThreadFunction(void*);
+//void* ThreadFunction(void*);
 
 class Server
 {
 private:
 
-    friend void* ThreadFunction(void* serverArgument)
+    static void* ThreadFunction(void* serverArgument)
     {
         return ((ThreadPackage*)(serverArgument))->ServerInstance->PthreadWorkFunction((ThreadPackage*)serverArgument);
     }
 
-    const static unsigned short defaultPort=80;
+    const static unsigned short defaultPort=1025;
     const static unsigned int PayloadSize=255;
     const static unsigned int requestSize=100;
     unsigned short portNumber;
@@ -38,17 +31,7 @@ private:
 
     void *PthreadWorkFunction(ThreadPackage*);
 
-    static char *DNSLookupFunction(char [], int );
-
-    Response ProcessCommand(string);
-
-    void tryGET(Request );
-
-    void tryPUT(Request );
-
-    void tryHEAD(Request );
-
-    void tryDELETE(Request );
+    //static char *DNSLookupFunction(char [], int );
 
     // The GetFile function returns an object of type Response
     // pathname holds the file location of the file being requested
@@ -57,8 +40,8 @@ private:
 
 public:
 
-    static Server GenerateServer(string);
-    static Server GenerateServer();
+    static Server* GenerateServer(string);
+    static Server* GenerateServer();
 
     int Run();
 

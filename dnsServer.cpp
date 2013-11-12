@@ -18,11 +18,11 @@ int main(int argc, char *argv[])
     //check the number of arguments
     if(argc != 2)
     {
-        *someServer = Server::GenerateServer();
+        someServer = Server::GenerateServer();
     }
     else
     {
-        *someServer= Server::GenerateServer(argv[1]);
+        someServer= Server::GenerateServer(argv[1]);
     }
 
 

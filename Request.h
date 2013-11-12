@@ -4,21 +4,7 @@
 #include <string>
 using namespace std;
 
-enum Command
-{
-    GET=1,
-    HEAD=2,
-    POST=4,
-    PUT=8,
-    DELETE=16,
-    GARBAGE=32
-};
-
-enum HTTP_1
-{
-    Zero=0,
-    One=1
-};
+#include "Utilities.h"
 
 class Request
 {
@@ -30,11 +16,11 @@ class Request
 
         Command CommandRequest;
         string Path;
-        HTTP_1 Version;
+        HttpVersion Version;
     private:
         Command ParseCommand(string);
         string ParsePath(string);
-        HTTP_1 ParseHTTPVersion(string);
+        HttpVersion ParseHTTPVersion(string);
 };
 
 
