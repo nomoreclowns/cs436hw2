@@ -14,20 +14,19 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    unsigned short portNumber;
+    Server* someServer;
     //check the number of arguments
     if(argc != 2)
     {
-        portNumber = 1025;
+        *someServer = Server::GenerateServer();
     }
     else
     {
-        portNumber = atoi(argv[1]);
+        *someServer= Server::GenerateServer(argv[1]);
     }
 
-    Server someServer= Server::GenerateServer(portNumber);
 
-    someServer.Run();
+    someServer->Run();
 
 	return 0;
 }

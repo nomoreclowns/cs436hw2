@@ -44,6 +44,10 @@ Command Request::ParseCommand(string clientCommand)
             {
                 package= HEAD;
             }
+            else if(parsedCommand == "POST ")
+            {
+                package= POST;
+            }
             else
             {
             MinCommandSize=7;

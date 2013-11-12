@@ -1,12 +1,12 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-
 #include <string>
 using namespace std;
 #include "Request.h"
 #include "Response.h"
 #include "Utilities.h"
+#include "FileObject.h"
 
 typedef struct
 {
@@ -26,6 +26,7 @@ private:
         return ((ThreadPackage*)(serverArgument))->ServerInstance->PthreadWorkFunction((ThreadPackage*)serverArgument);
     }
 
+    const static unsigned short defaultPort=80;
     const static unsigned int PayloadSize=255;
     const static unsigned int requestSize=100;
     unsigned short portNumber;
@@ -56,7 +57,8 @@ private:
 
 public:
 
-    static Server GenerateServer(unsigned short);
+    static Server GenerateServer(string);
+    static Server GenerateServer();
 
     int Run();
 

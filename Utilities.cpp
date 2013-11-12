@@ -17,7 +17,7 @@ void Utilities::initializeBuffer(char buffer[], int size, int initialValue)
 
 ThreadPackage::ThreadPackage()
 {
-    ServerInstance=0;
+    ServerInstance=nullptr;
     SocketData=0;
 }
 

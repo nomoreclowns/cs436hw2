@@ -14,7 +14,7 @@ using namespace std;
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/stat.h>
-#include <errno.h>
+//#include <errno.h>
 
 //Project headers
 #include "Response.h"
@@ -24,12 +24,28 @@ using namespace std;
 //private constructor for class used by the factory method
 Server::Server(unsigned short inPortNumber)
 {
-    portNumber=inPortNumber;
+    portNumber = inPortNumber;
 }
 
 //static factory method for creating server objects
-Server Server::GenerateServer(unsigned short port)
+Server Server::GenerateServer()
 {
+    Server* package= new Server(defaultPort);
+
+    return *package;
+}
+
+Server Server::GenerateServer(string inPortNumber)
+{
+    int port;
+    try
+    {
+        port = stoi(inPortNumber);
+    }
+    catch(...)
+    {
+        port=defaultPort;
+    }
     Server* package= new Server(port);
 
     return *package;
@@ -79,7 +95,7 @@ int Server::Run()
 		packageToThread=new ThreadPackage(this, newSocketDesc);
 
 		//create a new thread and give it a pointer to the function that handles clients
-		pthread_create(&tid[threadIndex], 0, &ThreadFunction, packageToThread);
+		pthread_create(&tid[threadIndex], nullptr, &ThreadFunction, packageToThread);
 
 		threadIndex++;
 	}
@@ -87,7 +103,7 @@ int Server::Run()
     //don't know yet if this works properly
 	for(int someIndex=0; someIndex <= threadIndex; someIndex++)
 	{
-		pthread_join(tid[someIndex],NULL);
+		pthread_join(tid[someIndex],nullptr);
 	}
 
 	return 0;
@@ -108,6 +124,9 @@ Response Server::ProcessCommand(string command)
         ;
         break;
     case HEAD:
+        ;
+        break;
+    case POST:
         ;
         break;
     case DELETE:
@@ -143,7 +162,7 @@ void Server::tryDELETE(Request clientRequest)
 
 void* Server::PthreadWorkFunction_obsolete(void* packageToThread1)
 {
-    if (packageToThread1 == NULL)
+    if (packageToThread1 == nullptr)
     {
         return packageToThread1;
     }
@@ -159,12 +178,12 @@ void* Server::PthreadWorkFunction_obsolete(void* packageToThread1)
 	//cout<<"DNSResponse = "<<DNSResponse<<endl;
 	//send(*socketID, DNSResponse, PayloadSize, 0);
 
-	return (void*)0;
+	return nullptr;
 }
 
 void* Server::PthreadWorkFunction(ThreadPackage* packageToThread)
 {
-    if (packageToThread == NULL)
+    if (packageToThread == nullptr)
     {
         return packageToThread;
     }
@@ -180,20 +199,29 @@ void* Server::PthreadWorkFunction(ThreadPackage* packageToThread)
 	//cout<<"DNSResponse = "<<DNSResponse<<endl;
 	//send(socketID, DNSResponse, PayloadSize, 0);
 
-	return (void*)0;
+	return nullptr;
 }
 
 Response Server::GetFile(string pathname, Command clientCommand)
 {
   Response myResponse;
-  struct stat myStat;
-  struct stat *myStatPointer = &myStat;
-  int functionError =  stat(pathname.c_str(), myStatPointer);
+  //struct stat myStat;
+  FileStats *fileMetaData = new FileStats();
+  int functionError =  stat(pathname.c_str(), fileMetaData);
 
   if(functionError == 0)
   {
+      //set permissions equal to values defined in stat.h documentation
+      unsigned int permissions = (S_IRUSR | S_IROTH);
+
+      //
+      if((fileMetaData->st_mode & permissions) != permissions)
+      {
+          //Permission denied error
+          //myResponse.status = ;
+      }
       myResponse.status = 200;
-      myResponse.dateModified = myStat.st_mtime;
+      myResponse.dateModified = fileMetaData->st_mtime;
 
       ifstream fin;
       if(clientCommand == GET)
@@ -201,9 +229,9 @@ Response Server::GetFile(string pathname, Command clientCommand)
             fin.open(pathname.c_str());
             if(fin.is_open())
             {
-              char *buffer = new char[myStat.st_size];
-              fin.read(buffer,myStat.st_size);
-              myResponse.contents = string(buffer,myStat.st_size);
+              char *buffer = new char[fileMetaData->st_size];
+              fin.read(buffer,fileMetaData->st_size);
+              myResponse.contents = string(buffer,fileMetaData->st_size);
               fin.close();
             }
       }
@@ -219,6 +247,11 @@ Response Server::GetFile(string pathname, Command clientCommand)
       else if(errorValue == ENOENT)
       {
           myResponse.status = 404;
+      }
+      else
+      {
+          //Unspecified error
+          //myResponse.status = ;
       }
   }
 

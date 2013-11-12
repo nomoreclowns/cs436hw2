@@ -8,9 +8,10 @@ enum Command
 {
     GET=1,
     HEAD=2,
-    PUT=4,
-    DELETE=8,
-    GARBAGE=16
+    POST=4,
+    PUT=8,
+    DELETE=16,
+    GARBAGE=32
 };
 
 enum HTTP_1
