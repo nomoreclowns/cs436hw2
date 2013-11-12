@@ -17,6 +17,8 @@ class Request
         Command CommandRequest;
         string Path;
         HttpVersion Version;
+        string headers[];
+        string body;
     private:
         Command ParseCommand(string);
         string ParsePath(string);
