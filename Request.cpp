@@ -25,7 +25,9 @@ Command Request::ParseCommand(string clientCommand)
 
     if(clientCommand.length() > MinCommandSize)
     {
-        string parsedCommand= clientCommand.substr(0, MinCommandSize);
+        string parsedCommand;
+        parsedCommand.resize(MinCommandSize);
+        parsedCommand= clientCommand.substr(0, MinCommandSize);
 
         if(parsedCommand == "GET ")
         {
