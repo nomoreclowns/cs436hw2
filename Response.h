@@ -11,29 +11,29 @@ class Response {
   HttpVersion Version;
   short status;
   string entity;
-  virtual void Form();
+  virtual string Form();
   Response();
 };
 
-class GetHeadResponse
+class GetHeadResponse : public Response
 {
 public:
   int dateModified;
   unsigned long Size;
-  virtual void Form();
+  virtual string Form();
 };
 
-class PutPostResponse
+class PutPostResponse : public Response
 {
 public:
   unsigned long Size;
-  virtual void Form();
+  virtual string Form();
 };
 
-class DeleteResponse
+class DeleteResponse : public Response
 {
 public:
-  virtual void Form();
+  virtual string Form();
 };
 
 #endif // SERVER_H

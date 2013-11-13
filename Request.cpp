@@ -26,7 +26,6 @@ Command Request::ParseCommand(string clientCommand)
     if(clientCommand.length() > MinCommandSize)
     {
         string parsedCommand= clientCommand.substr(0, MinCommandSize);
-        parsedCommand.resize(7);
 
         if(parsedCommand == "GET ")
         {
@@ -39,6 +38,7 @@ Command Request::ParseCommand(string clientCommand)
         else
         {
             MinCommandSize=5;
+            parsedCommand.resize(MinCommandSize);
             parsedCommand= clientCommand.substr(0, MinCommandSize);
             if(parsedCommand == "HEAD ")
             {
@@ -51,6 +51,7 @@ Command Request::ParseCommand(string clientCommand)
             else
             {
             MinCommandSize=7;
+            parsedCommand.resize(MinCommandSize);
                 parsedCommand= clientCommand.substr(0, MinCommandSize);
                 if (parsedCommand == "DELETE ")
                 {

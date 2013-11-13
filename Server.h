@@ -21,7 +21,7 @@ private:
 
     const static unsigned short defaultPort=1025;
     const static unsigned int PayloadSize=255;
-    const static unsigned int requestSize=100;
+    const static unsigned int requestSize=500;
     unsigned short portNumber;
     //void* packageToThread;
 

@@ -15,7 +15,7 @@ class FileInfo
 {
 protected:
     string pFullPath;
-    string pDateModified;
+    unsigned int  pDateModified;
     unsigned long pFileSize;
     unsigned int pPermissions;
     int getStats(string);
@@ -30,7 +30,7 @@ public:
         return pFullPath;
     }
 
-    string DateModified()
+    unsigned int  DateModified()
     {
         return pDateModified;
     }

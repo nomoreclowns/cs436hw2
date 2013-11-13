@@ -20,6 +20,7 @@ using namespace std;
 #include "Response.h"
 #include "Server.h"
 #include "Utilities.h"
+#include "HttpHandler.h"
 
 //private constructor for class used by the factory method
 Server::Server(unsigned short inPortNumber)
@@ -117,15 +118,22 @@ void* Server::PthreadWorkFunction(ThreadPackage* packageToThread)
     }
 
     int socketID= packageToThread->SocketData;
+    HttpHandler Service;
 
 	char clientRequest[requestSize];
+	Utilities::initializeBuffer(clientRequest, requestSize, 0);
 	//char *clientRequestPtr=clientRequest;
 	cout<<"waiting for client request..."<<endl;
 	recv(socketID, clientRequest, requestSize, 0);
 	cout<<"received request!"<<endl;
+
+	string unprocessedRequest= string(clientRequest, requestSize);
+	cout<<unprocessedRequest<<endl;
+	string processedRequest= Service.ProcessCommand(unprocessedRequest);
+	cout<<processedRequest<<endl;
 	//char *DNSResponse=DNSLookupFunction(clientRequest, requestSize);
 	//cout<<"DNSResponse = "<<DNSResponse<<endl;
-	//send(socketID, DNSResponse, PayloadSize, 0);
+	send(socketID, processedRequest.c_str(), processedRequest.size(), 0);
 
 	return nullptr;
 }

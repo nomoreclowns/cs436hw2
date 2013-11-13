@@ -11,13 +11,13 @@ class HttpHandler
 {
 private:
 
-    void tryGET(Request );
+    GetHeadResponse tryGET(Request );
 
     void tryPUT(Request );
 
-    void tryHEAD(Request );
+    GetHeadResponse tryHEAD(Request );
 
-    void tryDELETE(Request );
+    DeleteResponse tryDELETE(Request );
 
 public:
 

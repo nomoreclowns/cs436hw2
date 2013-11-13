@@ -10,7 +10,7 @@ using namespace std;
 FileInfo::FileInfo()
 {
     pFullPath="";
-    pDateModified="";
+    pDateModified=0;
 }
 
 int FileInfo::getStats(string pathname)
