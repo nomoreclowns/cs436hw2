@@ -122,7 +122,6 @@ void* Server::PthreadWorkFunction(ThreadPackage* packageToThread)
 
 	char clientRequest[requestSize];
 	Utilities::initializeBuffer(clientRequest, requestSize, 0);
-	//char *clientRequestPtr=clientRequest;
 	cout<<"waiting for client request..."<<endl;
 	recv(socketID, clientRequest, requestSize, 0);
 	cout<<"received request!"<<endl;
@@ -131,8 +130,6 @@ void* Server::PthreadWorkFunction(ThreadPackage* packageToThread)
 	cout<<unprocessedRequest<<endl;
 	string processedRequest= Service.ProcessCommand(unprocessedRequest);
 	cout<<processedRequest<<endl;
-	//char *DNSResponse=DNSLookupFunction(clientRequest, requestSize);
-	//cout<<"DNSResponse = "<<DNSResponse<<endl;
 	send(socketID, processedRequest.c_str(), processedRequest.size(), 0);
 
 	return nullptr;
