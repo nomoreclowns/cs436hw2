@@ -17,7 +17,7 @@ Request::Request(string command)
     Version=ParseHTTPVersion(command);
 }
 
-Command Request::ParseCommand(string clientCommand)
+Command Request::ParseCommand(string& clientCommand)
 {
     unsigned int MinCommandSize=4;
 
@@ -71,7 +71,7 @@ Command Request::ParseCommand(string clientCommand)
 
 }
 
-string Request::ParsePath(string command)
+string Request::ParsePath(string& command)
 {
 	string path="";
 
@@ -85,7 +85,7 @@ string Request::ParsePath(string command)
 	return path;
 }
 
-HttpVersion Request::ParseHTTPVersion(string command)
+HttpVersion Request::ParseHTTPVersion(string& command)
 {
 	//HTTP_1 Version = Zero;
 

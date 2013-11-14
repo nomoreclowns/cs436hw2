@@ -1,5 +1,6 @@
 #include <string>
 using namespace std;
+#include <ctime>
 #include "Response.h"
 
 Response::Response()
@@ -14,6 +15,8 @@ string Response::Form()
 {
     string package="";
     package.reserve(5);
+
+    return package;
 }
 
 string GetHeadResponse::Form()
@@ -25,11 +28,11 @@ string GetHeadResponse::Form()
     case 200:
         if(entity.size() <= 1)
         {
-            package="HTTP/1.0 200\r\nContent-Length:"+to_string(Size)+"\r\nLast-Modified:xxxxxx\r\n";
+            package="HTTP/1.0 200\r\nContent-Length:"+to_string(Size)+"\r\nLast-Modified:"+ctime(&dateModified)+"\r\n";
         }
         else
         {
-            package="HTTP/1.0 200\r\nContent-Length:"+to_string(Size)+"\r\nLast-Modified:xxxxxx\r\n"+entity;
+            package="HTTP/1.0 200\r\nContent-Length:"+to_string(Size)+"\r\nLast-Modified:"+ctime(&dateModified)+"\r\n"+entity+"\r\n";
         }
 
         break;

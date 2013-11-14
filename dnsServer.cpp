@@ -15,7 +15,9 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     Server* someServer;
-    //check the number of arguments
+    int status= 1;
+
+
     if(argc != 2)
     {
         someServer = Server::GenerateServer();
@@ -25,8 +27,8 @@ int main(int argc, char *argv[])
         someServer= Server::GenerateServer(argv[1]);
     }
 
+    status= someServer->Run();
 
-    someServer->Run();
 
 	return 0;
 }

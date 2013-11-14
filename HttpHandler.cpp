@@ -46,7 +46,7 @@ string HttpHandler::ProcessCommand(string command)
     else if(ClientRequest.CommandRequest==HEAD)
     {
         GetHeadResponse Data = tryHEAD(ClientRequest);
-        //ServerResponse= Data.Form();
+        ServerResponse= Data.Form();
     }
     //else if(ClientRequest.CommandRequest==PUT)
     //{
