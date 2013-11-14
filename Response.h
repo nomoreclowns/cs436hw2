@@ -18,7 +18,7 @@ class Response {
 class GetHeadResponse : public Response
 {
 public:
-  int dateModified;
+  long dateModified;
   unsigned long Size;
   virtual string Form();
 };

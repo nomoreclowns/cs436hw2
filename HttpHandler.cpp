@@ -46,16 +46,17 @@ string HttpHandler::ProcessCommand(string command)
     else if(ClientRequest.CommandRequest==HEAD)
     {
         GetHeadResponse Data = tryHEAD(ClientRequest);
-        //ServerResponse= Data.Form();
+        ServerResponse= Data.Form();
     }
-    //else if(ClientRequest.CommandRequest==PUT)
-    //{
-        //;
-    //}
+    else if(ClientRequest.CommandRequest==PUT)
+    {
+        PutPostResponse PData = tryPUT(ClientRequest);
+        ServerResponse= PData.Form();
+    }
     else if(ClientRequest.CommandRequest==DELETE)
     {
-        DeleteResponse Data = tryDELETE(ClientRequest);
-        //ServerResponse= Data.Form();
+        DeleteResponse DData = tryDELETE(ClientRequest);
+        ServerResponse= DData.Form();
     }
 
     return ServerResponse;
@@ -86,9 +87,26 @@ GetHeadResponse HttpHandler::tryGET(Request clientRequest)
     return ServerResponse;
 }
 
-void HttpHandler::tryPUT(Request clientRequest)
+PutPostResponse HttpHandler::tryPUT(Request clientRequest)
 {
+    PutPostResponse ServerResponse;
+    ServerResponse.Version= OneZero;
+    FileWriter someFile(clientRequest.body);
+    int errorCode=someFile.Write(clientRequest.Path);
+    if(errorCode==0)
+    {
+        ServerResponse.status= 200;
+    }
+    else if(errorCode == EACCES)
+    {
+        ServerResponse.status= 403;
+    }
+    else if(errorCode == ENOENT)
+    {
+        ServerResponse.status= 404;
+    }
 
+    return ServerResponse;
 }
 
 GetHeadResponse HttpHandler::tryHEAD(Request clientRequest)

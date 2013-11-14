@@ -20,9 +20,9 @@ class Request
         string headers[];
         string body;
     private:
-        Command ParseCommand(string);
-        string ParsePath(string);
-        HttpVersion ParseHTTPVersion(string);
+        Command ParseCommand(string&);
+        string ParsePath(string&);
+        HttpVersion ParseHTTPVersion(string&);
 };
 
 

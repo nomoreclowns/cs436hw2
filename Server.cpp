@@ -86,7 +86,7 @@ int Server::Run()
 
 	while(true)
 	{
-	  cout<<"waiting to accept..."<<endl;
+	  cout<<"waiting to accept...on port "<<portNumber<<endl;
 	  // this system call is blocking, and it generates a new socket to communicate with the client
 	  // so the old one can continue to be used for clients trying to connect
 		int newSocketDesc=accept(initialSocketDesc, (struct sockaddr *) &clientAddr, &clientLength);
@@ -123,6 +123,7 @@ void* Server::PthreadWorkFunction(ThreadPackage* packageToThread)
 	char clientRequest[requestSize];
 	Utilities::initializeBuffer(clientRequest, requestSize, 0);
 	cout<<"waiting for client request..."<<endl;
+	cout<<"waiting for client request... on port "<<portNumber<<endl;
 	recv(socketID, clientRequest, requestSize, 0);
 	cout<<"received request!"<<endl;
 

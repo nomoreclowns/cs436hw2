@@ -15,17 +15,39 @@ FileInfo::FileInfo()
 
 int FileInfo::getStats(string pathname)
 {
+    //pathname.erase(0,1);
   FileStats *resourceInfoPtr = new FileStats();
 
+    long bufSize;
+    char *someBuffer;
+    char *cwd;
+
+
+    bufSize = pathconf(".", _PC_PATH_MAX);
+
+    someBuffer = (char *)malloc((size_t)bufSize);
+    if (someBuffer != nullptr)
+    {
+        cwd = getcwd(someBuffer, (size_t)bufSize);
+    }
+
+    int Count;
+    for(Count= 0; Count<bufSize && cwd[Count] != 0; Count++)
+    {
+    ;
+    }
+    string fullPath= string(cwd, Count)+pathname;
+    pFullPath=fullPath;
+    free(cwd);
   errno=0;
-  int errorCode =  stat(pathname.c_str(), resourceInfoPtr);
+  int errorCode =  stat(fullPath.c_str(), resourceInfoPtr);
 
   if(errorCode == 0)
   {
       pDateModified = resourceInfoPtr->st_mtime;
       pFileSize = resourceInfoPtr->st_size;
       pPermissions = resourceInfoPtr->st_mode;
-      pFullPath = pathname;
+      pFullPath = fullPath;
       delete resourceInfoPtr;
       return errorCode;
   }
@@ -58,7 +80,7 @@ int FileInfo::DeleteFile(string pathname)
           errorCode= EACCES;
       }
       errno=0;
-      remove(pathname.c_str());
+      remove(FullPath().c_str());
       errorCode = errno;
     }
 
@@ -109,7 +131,7 @@ int FileReader::getData(string pathname)
           errorCode= EACCES;
       }
       ifstream fin;
-      fin.open(pathname.c_str());
+      fin.open(FullPath().c_str());
       if(fin.is_open() == false)
       {
           return -1;
