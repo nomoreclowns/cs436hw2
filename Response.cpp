@@ -50,7 +50,18 @@ string GetHeadResponse::Form()
 string PutPostResponse::Form()
 {
     string package="";
-    package.reserve(5);
+    package.reserve(50000);
+    switch(status)
+    {
+    case 200:
+        package="HTTP/1.0 200\r\n\r\n";
+        break;
+    case 403:
+        package="HTTP/1.0 403\r\n\r\n";
+        break;
+    case 404:
+        package="HTTP/1.0 404\r\n\r\n";
+    }
 
     return package;
 }
@@ -58,7 +69,18 @@ string PutPostResponse::Form()
 string DeleteResponse::Form()
 {
     string package="";
-    package.reserve(5);
-
+    package.reserve(50000);
+    switch(status)
+    {
+    case 200:
+        package="HTTP/1.0 200\r\n\r\n";
+        break;
+    case 403:
+        package="HTTP/1.0 403\r\n\r\n";
+        break;
+    case 404:
+        package="HTTP/1.0 404\r\n\r\n";
+        break;
+    }
     return package;
 }

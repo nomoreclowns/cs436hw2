@@ -15,6 +15,7 @@ Request::Request(string command)
     CommandRequest=ParseCommand(command);
     Path=ParsePath(command);
     Version=ParseHTTPVersion(command);
+    body=command;
 }
 
 Command Request::ParseCommand(string& clientCommand)
@@ -76,11 +77,12 @@ string Request::ParsePath(string& command)
 	string path="";
 
 	path.reserve(command.length());
-
-	for (unsigned int i= 0; command[i] != ' ' && i< command.length(); i++)
+    unsigned int i;
+	for (i= 0; command[i] != ' ' && i< command.length(); i++)
 	{
 		path += command[i];
 	}
+	command.erase(0,i);
 
 	return path;
 }
@@ -88,6 +90,14 @@ string Request::ParsePath(string& command)
 HttpVersion Request::ParseHTTPVersion(string& command)
 {
 	//HTTP_1 Version = Zero;
+	//command.erase(0,11);
+    unsigned int i;
+	for (i= 0; command[i] != ' ' && i< command.length(); i++)
+	{
+
+	//command.erase(0,1);;//path += command[i];
+	}
+	//command.erase(0,i);
 
 	return OneZero;
 }

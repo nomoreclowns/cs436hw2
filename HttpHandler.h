@@ -13,7 +13,7 @@ private:
 
     GetHeadResponse tryGET(Request );
 
-    void tryPUT(Request );
+    PutPostResponse tryPUT(Request );
 
     GetHeadResponse tryHEAD(Request );
 
