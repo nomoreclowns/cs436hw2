@@ -64,12 +64,14 @@ int Server::Run()
 	serverAddr->sin_port=htons(portNumber);
 	serverAddr->sin_addr.s_addr= INADDR_ANY;
 
+
     //using the bind system call
 	int returnStatus=bind(initialSocketDesc, (struct sockaddr *) serverAddr, sizeof(*serverAddr));
 	if(returnStatus != 0)
 	{
 		return returnStatus;
 	}
+	getsockname(initialSocketDesc, (struct sockaddr *) serverAddr, sizeof(*serverAddr));
 
 	//using the listen system cal/
 	listen(initialSocketDesc, 5);

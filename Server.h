@@ -19,7 +19,7 @@ private:
         return ((ThreadPackage*)(serverArgument))->ServerInstance->PthreadWorkFunction((ThreadPackage*)serverArgument);
     }
 
-    const static unsigned short defaultPort=1025;
+    const static unsigned short defaultPort=1026;
     const static unsigned int PayloadSize=255;
     const static unsigned int requestSize=500;
     unsigned short portNumber;

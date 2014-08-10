@@ -50,7 +50,7 @@ string GetHeadResponse::Form()
 string PutPostResponse::Form()
 {
     string package="";
-    package.reserve(50000);
+    //package.reserve(50000);
     switch(status)
     {
     case 200:

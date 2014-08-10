@@ -15,8 +15,7 @@ FileInfo::FileInfo()
 
 int FileInfo::getStats(string pathname)
 {
-    //pathname.erase(0,1);
-  FileStats *resourceInfoPtr = new FileStats();
+    FileStats *resourceInfoPtr = new FileStats();
 
     long bufSize;
     char *someBuffer;
@@ -87,27 +86,6 @@ int FileInfo::DeleteFile(string pathname)
     return errorCode;
 }
 
-/*
-string FileInfo::FullPath()
-{
-    return string(pFullPath);
-}
-
-string FileInfo::DateModified()
-{
-    return string(pDateModified);
-}
-
-unsigned long FileInfo::FileSize()
-{
-    return pFileSize;
-}
-
-unsigned int FileInfo::Permissions()
-{
-    return pPermissions;
-}
-*/
 
 FileReader::FileReader()
 {
@@ -150,12 +128,6 @@ int FileReader::getData(string pathname)
     }
 }
 
-/*
-string FileObject::Content()
-{
-    return pContent;
-}
-*/
 
 
 FileWriter::FileWriter(string fileContent)

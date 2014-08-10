@@ -13,30 +13,9 @@ string HttpHandler::ProcessCommand(string command)
 {
     string ServerResponse="";
 
-    Request ClientRequest;//= new Request();
+    Request ClientRequest;
     ClientRequest.Parse(command);
-    /*
-    switch(ClientRequest.CommandRequest)
-    {
-    case GET:
-        GetHeadResponse Data = tryGET(ClientRequest);
-        break;
-    case HEAD:
-        //GetHeadResponse Data = tryHEAD(ClientRequest);
-        break;
-    case PUT:
-        ;
-        break;
-    case POST:
-        ;
-        break;
-    case DELETE:
-        DeleteResponse Data = tryDELETE(ClientRequest);
-        break;
-    default:
-        break;
-    }
-    */
+
     auto var=ClientRequest.CommandRequest;
     if(ClientRequest.CommandRequest==GET)
     {
